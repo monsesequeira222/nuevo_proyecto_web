@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Subir Archivo y Ver Resultados</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; }
+        th { background-color: #6C7AE0; color: white; }
+        th, td { padding: 10px; }
+        table { width: 100%; margin-top: 20px; }
+        .chart-container { width: 80%; margin: 20px auto; }
+        input[type="submit"], input[type="file"], button { margin-top: 10px; }
+        button { padding: 5px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+        .error-message { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Subir Archivo</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <input type="submit" value="Subir" class="btn btn-primary mt-2">
+        </form>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        {% if resultados %}
+            <h2 class="mt-5">Resultados</h2>
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Última Compra</th>
+                        <th>Producto Frecuente</th>
+                        <th>Total de Compras</th>
+                        <th>Total Gastado</th>
+                        <th>Frecuencia Promedio (días)</th>
+                        <th>Próxima Compra Estimada</th>
+                        <th>Días desde Próxima Compra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in resultados %}
+                    <tr>
+                        <td>{{ cliente['Cliente'] | default('No disponible') }}</td>
+                        <td>{{ cliente['Última_Compra'] | default('No disponible') }}</td>
+                        <td>{{ cliente['Producto_Frecuente'] | default('No disponible') }}</td>
+                        <td>{{ cliente['Total_Compras'] | default('No disponible') }}</td>
+                        <td>{{ cliente['Total_Gastado'] | default('No disponible') }}</td>
+                        <td>{{ cliente['Frecuencia_Promedio'] | round(2) if cliente['Frecuencia_Promedio'] else 'No disponible' }}</td>
+                        <td>{{ cliente['Próxima_Compra_Estimada'] | default('No disponible') }}</td>
+                        <td>{{ cliente['Días_Desde_Próxima_Compra'] | default('No disponible') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <!-- Descargar datos en CSV -->
+            <form action="/download/csv" method="get">
+                <button type="submit" class="btn btn-info">Descargar datos en CSV</button>
+            </form>
+            <!-- Contenedor para los gráficos de Chart.js -->
+            <div class="chart-container mt-5">
+                <h2>Productos Más Vendidos</h2>
+                <canvas id="topProductsChart"></canvas>
+            </div>
+        {% else %}
+            <p class="mt-5">No hay resultados para mostrar. Por favor, seleccione un archivo CSV o XLSX para cargar y luego haga clic en "Subir".</p>
+        {% endif %}
+
+        <!-- Incluir Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            var topProductsData = {{ top_products | safe }};
+
+            var topProductsChart = new Chart(document.getElementById('topProductsChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: topProductsData.map(product => product.Producto),
+                    datasets: [{
+                        label: 'Total Ventas',
+                        data: topProductsData.map(product => product.Precio),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

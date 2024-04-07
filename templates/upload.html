@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Subir Archivo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+        .container {
+            text-align: center;
+            padding-top: 50px;
+            margin: auto;
+            max-width: 500px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border: none;
+            width: 100%;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .file-input {
+            margin-top: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Subir Archivo</h1>
+        <p>Seleccione el archivo CSV o XLSX que desea analizar:</p>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <div class="upload-btn-wrapper">
+                <button class="btn-custom">Elegir archivo</button>
+                <input type="file" name="file" required>
+            </div>
+            <input type="submit" value="Subir y Analizar" class="btn-custom">
+        </form>
+        <p id="message-area"></p>
+    </div>
+</body>
+</html>
+
+
