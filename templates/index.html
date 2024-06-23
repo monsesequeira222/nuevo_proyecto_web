@@ -2,118 +2,86 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Subir Archivo y Ver Resultados</title>
+    <title>Bienvenido a SalesAI</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        body { font-family: Arial, sans-serif; }
-        table, th, td { border: 1px solid black; border-collapse: collapse; }
-        th { background-color: #6C7AE0; color: white; }
-        th, td { padding: 10px; }
-        table { width: 100%; margin-top: 20px; }
-        .chart-container { width: 80%; margin: 20px auto; }
-        input[type="submit"], input[type="file"], button { margin-top: 10px; }
-        button { padding: 5px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #45a049; }
-        .error-message { color: red; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+        .navbar-custom {
+            background-color: #5D55FA; /* Ajustar al color deseado */
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: white;
+            margin-right: 15px;
+        }
+        .hero-section {
+            padding: 150px 0;
+            color: white;
+            background: linear-gradient(to right, #667eea, #764ba2); /* Ejemplo de degradado */
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 3.5rem;
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+        }
+        .btn-hero {
+            background-color: #34D399; /* Ajustar al color deseado */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+        .btn-hero:hover {
+            background-color: #28a745; /* Ajustar al color deseado para hover */
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Subir Archivo</h1>
-        <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <input type="submit" value="Subir" class="btn btn-primary mt-2">
-        </form>
-
-        {% if error %}
-            <p class="error-message">{{ error }}</p>
-        {% endif %}
-
-        {% if resultados %}
-            <h2 class="mt-5">Resultados</h2>
-            <table class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Última Compra</th>
-                        <th>Producto Frecuente</th>
-                        <th>Total de Compras</th>
-                        <th>Total Gastado</th>
-                        <th>Frecuencia Promedio (días)</th>
-                        <th>Próxima Compra Estimada</th>
-                        <th>Días desde Próxima Compra</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cliente in resultados %}
-                    <tr>
-                        <td>{{ cliente['Cliente'] | default('No disponible') }}</td>
-                        <td>{{ cliente['Última_Compra'] | default('No disponible') }}</td>
-                        <td>{{ cliente['Producto_Frecuente'] | default('No disponible') }}</td>
-                        <td>{{ cliente['Total_Compras'] | default('No disponible') }}</td>
-                        <td>{{ cliente['Total_Gastado'] | default('No disponible') }}</td>
-                        <td>{{ cliente['Frecuencia_Promedio'] | round(2) if cliente['Frecuencia_Promedio'] else 'No disponible' }}</td>
-                        <td>{{ cliente['Próxima_Compra_Estimada'] | default('No disponible') }}</td>
-                        <td>{{ cliente['Días_Desde_Próxima_Compra'] | default('No disponible') }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <!-- Descargar datos en CSV -->
-            <form action="/download/csv" method="get">
-                <button type="submit" class="btn btn-info">Descargar datos en CSV</button>
-            </form>
-            <!-- Contenedor para los gráficos de Chart.js -->
-            <div class="chart-container mt-5">
-                <h2>Productos Más Vendidos</h2>
-                <canvas id="topProductsChart"></canvas>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link" href="#">Productos</a>
+                    <a class="nav-link" href="#">Academia</a>
+                    <a class="nav-link" href="#">Soporte</a>
+                </div>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="#">Contáctanos</a>
+                    <a class="nav-link" href="#">Login</a>
+                    <form action="/SubirArchivo.html" method="get">
+                        <button type="submit" class="btn btn-light">Try for free</button>
+                    </form>
+                </div>
             </div>
-        {% else %}
-            <p class="mt-5">No hay resultados para mostrar. Por favor, seleccione un archivo CSV o XLSX para cargar y luego haga clic en "Subir".</p>
-        {% endif %}
+        </div>
+    </nav>
 
-        <!-- Incluir Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            var topProductsData = {{ top_products | safe }};
-
-            var topProductsChart = new Chart(document.getElementById('topProductsChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: topProductsData.map(product => product.Producto),
-                    datasets: [{
-                        label: 'Total Ventas',
-                        data: topProductsData.map(product => product.Precio),
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        </script>
+    <div class="hero-section">
+        <div class="container">
+            <h1>Automatice su motor de ingresos con IA.</h1>
+            <p>Descubra SalesAI: la solución para analizar ventas de manera automática y presentar datos precisos, asegurando maximizar las ventas.</p>
+            <!-- Asegúrate de que la ruta a 'SubirArchivo.html' sea correcta según la configuración de tu servidor Flask -->
+            <form action="/SubirArchivo.html" method="get">
+                <button type="submit" class="btn btn-hero">Probar Ahora</button>
+            </form>
+        </div>
     </div>
+
+    <!-- Scripts de Bootstrap al final para un correcto funcionamiento de los componentes interactivos -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

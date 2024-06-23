@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Subir Archivo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding-top: 70px;
+        }
+        .navbar-custom {
+            background-color: #6C7AE0;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: white;
+        }
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .navbar-brand:hover {
+            background-color: #5a67d8;
+        }
+        .navbar-custom .btn-outline-light {
+            color: white;
+            border-color: white;
+        }
+        .navbar-custom .btn-outline-light:hover {
+            background-color: white;
+            color: #6C7AE0;
+        }
+        .container {
+            margin: auto;
+            max-width: 95%;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .custom-file,
+        .btn-custom {
+            width: 50%;
+            margin: 0 auto;
+        }
+        .custom-file-input {
+            cursor: pointer;
+            text-align: center;
+            line-height: 2.5;
+        }
+        .custom-file-label {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .btn-custom {
+            background-color: #6C7AE0;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: block;
+        }
+        .btn-custom:hover,
+        .download-link:hover {
+            background-color: #5a67d8;
+        }
+        .download-link {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .download-link:hover {
+            background-color: initial;
+            color: #007bff;
+        }
+        @media (max-width: 768px) {
+            .custom-file, .btn-custom {
+                width: 100%;
+            }
+            .navbar-custom .navbar-nav .nav-link,
+            .navbar-custom .navbar-nav .btn,
+            .container, .custom-file-label, .custom-file-input {
+                max-width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link active" href="#">Productos</a>
+                    <a class="nav-item nav-link" href="#">Academia</a>
+                    <a class="nav-item nav-link" href="#">Soporte</a>
+                    <a class="nav-item nav-link" href="#">Contáctanos</a>
+                </div>
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="#">Login</a>
+                    <a class="nav-item btn btn-outline-light" href="#">Try for free</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <!-- Formulario para subir archivo -->
+        <h1>Subir Archivo</h1>
+        <a href="{{ url_for('download_template') }}" class="download-link">Descargar Plantilla</a>
+        <p>Seleccione un archivo CSV o XLSX para cargar y luego haga clic en "Subir".</p>
+        <form id="upload-form" action="{{ url_for('subir_archivo') }}" method="post" enctype="multipart/form-data">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="fileInput" name="file" onchange="updateFileName()">
+                <label class="custom-file-label" for="fileInput">Seleccionar archivo</label>
+            </div>
+            <button type="submit" class="btn btn-custom">Subir</button>
+        </form>
+        <!-- Manejo de errores y resultados -->
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+    </div>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        function updateFileName() {
+            var fileName = document.getElementById("fileInput").files[0].name;
+            var label = document.querySelector(".custom-file-label");
+            label.innerText = fileName;
+        }
+    </script>
+</body>
+</html>
+
+

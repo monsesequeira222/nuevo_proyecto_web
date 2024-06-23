@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Análisis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Formulario de Análisis Adicional</h2>
+        <form action="/procesar_analisis" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo:</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+            <div class="form-group">
+                <label for="pais">País:</label>
+                <input type="text" class="form-control" id="pais" name="pais" required>
+            </div>
+            <div class="form-group">
+                <label for="industria">Industria:</label>
+                <select class="form-control" id="industria" name="industria">
+                    <option value="retail">Retail</option>
+                    <option value="finance">Finanzas</option>
+                    <option value="technology">Tecnología</option>
+                    <option value="manufacturing">Manufactura</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <fieldset>
+                    <legend>Tipo de análisis (seleccione todas las que apliquen):</legend>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="clientes" name="tipo_analisis" value="clientes">
+                        <label class="form-check-label" for="clientes">Clientes</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="vendedores" name="tipo_analisis" value="vendedores">
+                        <label class="form-check-label" for="vendedores">Vendedores</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="stock" name="tipo_analisis" value="stock">
+                        <label class="form-check-label" for="stock">Stock</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="dashboard" name="tipo_analisis" value="dashboard">
+                        <label class="form-check-label" for="dashboard">Dashboard</label>
+                    </div>
+                </fieldset>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

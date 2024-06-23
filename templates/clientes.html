@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Información de Clientes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Análisis de Clientes</h1>
+    </div>
+
+    <div class="mt-5 text-center">
+        <a href="#" class="btn btn-primary btn-lg mr-2" data-toggle="modal" data-target="#analisisModal">Más Análisis</a>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#estrategiaModal">Crear Estrategia</button>
+    </div>
+
+    <!-- Modal de Tipo de Análisis -->
+    <div class="modal fade" id="analisisModal" tabindex="-1" role="dialog" aria-labelledby="analisisModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="analisisModalLabel">Tipo de Análisis</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Seleccione el tipo de análisis que desea realizar:</p>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">Clientes</a>
+              <a href="#" class="list-group-item list-group-item-action">Productos</a>
+              <a href="#" class="list-group-item list-group-item-action">Vendedores</a>
+              <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Crear Estrategia -->
+    <div class="modal fade" id="estrategiaModal" tabindex="-1" role="dialog" aria-labelledby="estrategiaModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="estrategiaModalLabel">Crear Estrategia</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="objetivo">¿Cuál es el principal objetivo de la estrategia de ventas?</label>
+                <select class="form-control" id="objetivo">
+                  <option>Aumentar la base de clientes</option>
+                  <option>Mejorar la tasa de retención de clientes</option>
+                  <option>Incrementar el valor medio de compra</option>
+                  <option>Expandir en nuevos mercados</option>
+                  <option>Otro (especifique)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="publico">¿Quién es el público objetivo de esta estrategia?</label>
+                <select class="form-control" id="publico">
+                  <option>Clientes Frecuentes</option>
+                  <option>Clientes sin Comprar</option>
+                  <option>Leads</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="canales">¿Qué canales de venta se considerarán prioritarios?</label>
+                <select class="form-control" id="canales">
+                  <option>Venta directa</option>
+                  <option>E-commerce</option>
+                  <option>Distribuidores</option>
+                  <option>Venta minorista</option>
+                  <option>Redes Sociales</option>
+                  <option>Otro (especifique)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="productos">¿Qué productos o servicios serán el foco principal de esta estrategia?</label>
+                <select class="form-control" id="productos">
+                  <option>Productos existentes</option>
+                  <option>Nuevos productos</option>
+                  <option>Servicios existentes</option>
+                  <option>Nuevos servicios</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exito">¿Cómo se medirá el éxito de la estrategia de ventas?</label>
+                <select class="form-control" id="exito">
+                  <option>Incremento en ventas</option>
+                  <option>Número de nuevos clientes</option>
+                  <option>Retorno de inversión (ROI)</option>
+                  <option>Satisfacción del cliente</option>
+                  <option>Otro (especifique)</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Crear Estrategia</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

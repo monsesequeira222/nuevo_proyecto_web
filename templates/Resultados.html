@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Análisis de Ventas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Estilos CSS */
+        header {
+            background-color: #6C7AE0;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        header h1, header a {
+            color: white;
+        }
+        .chart-container {
+            width: 100%;
+            height: 450px;
+            margin-top: 20px;
+        }
+        .center-text {
+            text-align: center;
+        }
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        p {
+            line-height: 1.2;
+        }
+        .more-results-link {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .btn-primary, .btn-primary:hover {
+            background-color: #17a2b8 !important;
+            border-color: #17a2b8 !important;
+            padding: 10px 15px; /* Ajuste de tamaño de botón */
+            font-size: 16px; /* Ajuste de tamaño de texto en botón */
+            margin-right: 10px; /* Espacio entre los botones */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Logo</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link active" href="#">Productos</a>
+                        <a class="nav-item nav-link" href="#">Academia</a>
+                        <a class="nav-item nav-link" href="#">Soporte</a>
+                        <a class="nav-item nav-link" href="#">Contáctanos</a>
+                    </div>
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#">Login</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% if resultados %}
+            <div id="resultadosSection">
+                <h2 class="mt-5 center-text">Resultados</h2>
+                <div class="table-responsive center-content">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Última Compra</th>
+                                <th>Producto Frecuente</th>
+                                <th>Total de Compras</th>
+                                <th>Total Gastado</th>
+                                <th>Frecuencia Promedio (días)</th>
+                                <th>Próxima Compra Estimada</th>
+                                <th>Días desde Próxima Compra</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in resultados %}
+                                <tr>
+                                    <td>{{ cliente['Cliente'] | default('No disponible') }}</td>
+                                    <td>{{ cliente['Última_Compra'] | default('No disponible') }}</td>
+                                    <td>{{ cliente['Producto_Frecuente'] | default('No disponible') }}</td>
+                                    <td>{{ cliente['Total_Compras'] | default('No disponible') }}</td>
+                                    <td>{{ cliente['Total_Gastado'] | default('No disponible') }}</td>
+                                    <td>{{ cliente['Frecuencia_Promedio'] | round(2) if cliente['Frecuencia_Promedio'] else 'No disponible' }}</td>
+                                    <td>{{ cliente['Próxima_Compra_Estimada'] | default('No disponible') }}</td>
+                                    <td>{{ cliente['Días_Desde_Próxima_Compra'] | default('No disponible') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <button id="downloadDataCSV" class="btn btn-primary" onclick="downloadCSV()">Descargar datos en CSV</button>
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No se encontraron resultados para mostrar.
+            </div>
+        {% endif %}
+        
+        <div id="topClientsSection" style="display: none;">
+            <h2 class="mt-5 center-text">Clientes Principales</h2>
+            <div class="table-responsive center-content">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Última Compra</th>
+                            <th>Producto Frecuente</th>
+                            <th>Total de Compras</th>
+                            <th>Total Gastado</th>
+                            <th>Frecuencia Promedio (días)</th>
+                            <th>Próxima Compra Estimada</th>
+                            <th>Días desde Próxima Compra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in top_clients | sort(attribute='Total_Gastado', reverse=True) %}
+                            <tr>
+                                <td>{{ cliente['Cliente'] | default('No disponible') }}</td>
+                                <td>{{ cliente['Última_Compra'] | default('No disponible') }}</td>
+                                <td>{{ cliente['Producto_Frecuente'] | default('No disponible') }}</td>
+                                <td>{{ cliente['Total_Compras'] | default('No disponible') }}</td>
+                                <td>{{ cliente['Total_Gastado'] | default('No disponible') }}</td>
+                                <td>{{ cliente['Frecuencia_Promedio'] | round(2) if cliente['Frecuencia_Promedio'] else 'No disponible' }}</td>
+                                <td>{{ cliente['Próxima_Compra_Estimada'] | default('No disponible') }}</td>
+                                <td>{{ cliente['Días_Desde_Próxima_Compra'] | default('No disponible') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div style="text-align: left;">
+                <button id="downloadClientsCSV" class="btn btn-primary" onclick="downloadClientsCSV()">Descargar clientes en CSV</button>
+            </div>
+        </div>
+
+        <div id="topProductsSection">
+            <h2 class="mt-5 center-text">Productos Más Vendidos</h2>
+            <div class="chart-container center-content">
+                <canvas id="topProductsChart"></canvas>
+            </div>
+        </div>
+
+        <div id="monthlySalesSection">
+            <h2 class="mt-5 center-text">Ventas Mensuales</h2>
+            <div class="chart-container center-content">
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="mt-5 center-content">
+            <div class="d-flex">
+                <a href="/SubirArchivo.html" class="btn btn-primary btn-lg mr-2">Nuevo Análisis</a>
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#analisisModal">
+                    Más Análisis
+                </button>
+                <button type="button" class="btn btn-primary btn-lg ml-2" data-toggle="modal" data-target="#estrategiaModal">
+                    Crear Estrategia
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Tipo de Análisis -->
+    <div class="modal fade" id="analisisModal" tabindex="-1" role="dialog" aria-labelledby="analisisModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="analisisModalLabel">Tipo de Análisis</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Seleccione el tipo de análisis que desea realizar:</p>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action" onclick="showTopClients()">Clientes</a>
+              <a href="#" class="list-group-item list-group-item-action" onclick="showTopProducts()">Productos</a>
+              <a href="#" class="list-group-item list-group-item-action" onclick="showMonthlySales()">Vendedores</a>
+              <a href="#" class="list-group-item list-group-item-action" onclick="showDashboard()">Dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Crear Estrategia -->
+    <div class="modal fade" id="estrategiaModal" tabindex="-1" role="dialog" aria-labelledby="estrategiaModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="estrategiaModalLabel">Crear Estrategia</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="objetivo">¿Cuál es el principal objetivo de la estrategia de ventas?</label>
+                <select class="form-control" id="objetivo" onchange="checkOtherOption()">
+                  <option>Aumentar la base de clientes</option>
+                  <option>Mejorar la tasa de retención de clientes</option>
+                  <option>Incrementar el valor medio de compra</option>
+                  <option>Expandir en nuevos mercados</option>
+                  <option>Otro (especifique)</option>
+                </select>
+              </div>
+              <div class="form-group" id="otroObjetivo" style="display: none;">
+                <label for="otroObjetivoText">Especifique otro objetivo:</label>
+                <input type="text" class="form-control" id="otroObjetivoText">
+              </div>
+              <div class="form-group">
+                <label for="publico">¿Quién es el público objetivo de esta estrategia?</label>
+                <select class="form-control" id="publico">
+                  <option>Clientes Frecuentes</option>
+                  <option>Clientes sin Comprar</option>
+                  <option>Leads</option>
+
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="canales">¿Qué canales de venta se considerarán prioritarios?</label>
+                <select class="form-control" id="canales">
+                  <option>Venta directa</option>
+                  <option>E-commerce</option>
+                  <option>Distribuidores</option>
+                  <option>Venta minorista</option>
+                  <option>Redes Sociales</option>
+                  <option>Otro (especifique)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="productos">¿Qué productos o servicios serán el foco principal de esta estrategia?</label>
+                <select class="form-control" id="productos">
+                  <option>Productos existentes</option>
+                  <option>Nuevos productos</option>
+                  <option>Servicios existentes</option>
+                  <option>Nuevos servicios</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exito">¿Cómo se medirá el éxito de la estrategia de ventas?</label>
+                <select class="form-control" id="exito">
+                  <option>Incremento en ventas</option>
+                  <option>Número de nuevos clientes</option>
+                  <option>Retorno de inversión (ROI)</option>
+                  <option>Satisfacción del cliente</option>
+                  <option>Otro (especifique)</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="crearEstrategia()">Crear Estrategia</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Función para verificar si se seleccionó la opción "Otro" y mostrar el campo de texto correspondiente
+        function checkOtherOption() {
+            var selectElement = document.getElementById("objetivo");
+            var otroObjetivoDiv = document.getElementById("otroObjetivo");
+            var otroObjetivoText = document.getElementById("otroObjetivoText");
+
+            if (selectElement.value === "Otro (especifique)") {
+                otroObjetivoDiv.style.display = "block";
+                otroObjetivoText.required = true;
+            } else {
+                otroObjetivoDiv.style.display = "none";
+                otroObjetivoText.required = false;
+            }
+        }
+
+        // Función para descargar datos en formato CSV
+        function downloadCSV() {
+            var table = document.querySelector('#resultadosSection table');
+            var rows = Array.from(table.querySelectorAll('tr'));
+            var csvContent = "data:text/csv;charset=utf-8,";
+            var headers = Array.from(rows[0].querySelectorAll('th')).map(header => header.textContent.trim());
+            csvContent += headers.join(",") + "\n";
+            for (var i = 1; i < rows.length; i++) {
+                var cells = Array.from(rows[i].querySelectorAll('td')).map(cell => cell.textContent.trim());
+                csvContent += cells.join(",") + "\n";
+            }
+            var encodedURI = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedURI);
+            link.setAttribute("download", "datos.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+
+        // Función para descargar datos de clientes en formato CSV
+        function downloadClientsCSV() {
+            var table = document.querySelector('#topClientsSection table');
+            var rows = Array.from(table.querySelectorAll('tr'));
+            var csvContent = "data:text/csv;charset=utf-8,";
+            var headers = Array.from(rows[0].querySelectorAll('th')).map(header => header.textContent.trim());
+            csvContent += headers.join(",") + "\n";
+            for (var i = 1; i < rows.length; i++) {
+                var cells = Array.from(rows[i].querySelectorAll('td')).map(cell => cell.textContent.trim());
+                csvContent += cells.join(",") + "\n";
+            }
+            var encodedURI = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedURI);
+            link.setAttribute("download", "clientes.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+
+        // Funciones para mostrar y ocultar elementos según la selección en el modal de análisis
+        function showTopClients() {
+            $('#analisisModal').modal('hide');
+            document.getElementById('resultadosSection').style.display = 'none';
+            document.getElementById('topClientsSection').style.display = 'block';
+            document.getElementById('topProductsSection').style.display = 'none';
+            document.getElementById('monthlySalesSection').style.display = 'none';
+        }
+
+        function showTopProducts() {
+            $('#analisisModal').modal('hide');
+            document.getElementById('resultadosSection').style.display = 'block';
+            document.getElementById('topClientsSection').style.display = 'none';
+            document.getElementById('topProductsSection').style.display = 'block';
+            document.getElementById('monthlySalesSection').style.display = 'block';
+        }
+
+        function showMonthlySales() {
+            $('#analisisModal').modal('hide');
+            document.getElementById('resultadosSection').style.display = 'block';
+            document.getElementById('topClientsSection').style.display = 'none';
+            document.getElementById('topProductsSection').style.display = 'block';
+            document.getElementById('monthlySalesSection').style.display = 'block';
+        }
+
+        function showDashboard() {
+            $('#analisisModal').modal('hide');
+            document.getElementById('resultadosSection').style.display = 'block';
+            document.getElementById('topClientsSection').style.display = 'none';
+            document.getElementById('topProductsSection').style.display = 'block';
+            document.getElementById('monthlySalesSection').style.display = 'block';
+        }
+
+        // Función para crear una estrategia
+        function crearEstrategia() {
+            // Coloca aquí el código para crear una estrategia
+            alert('Se ha creado una nueva estrategia.');
+        }
+    </script>
+    <script>
+        // Código para generar gráficos
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if top_products %}
+            var topProductsData = {{ top_products | tojson | safe }};
+            var topProductsChart = new Chart(document.getElementById('topProductsChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: topProductsData.map(product => product.Producto),
+                    datasets: [{
+                        label: 'Total Ventas',
+                        data: topProductsData.map(product => product.Precio),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            {% endif %}
+            fetch('/get_sales_data').then(response => response.json()).then(data => {
+                if (!data.error) {
+                    var ctx = document.getElementById('monthlySalesChart').getContext('2d');
+                    var monthlySalesChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.months,
+                            datasets: [{
+                                label: 'Ventas Mensuales',
+                                data: data.sales,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    console.error(data.error);
+                }
+            }).catch(error => console.error('Error al obtener los datos de ventas mensuales:', error));
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

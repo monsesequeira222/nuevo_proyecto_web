@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Desviación Estándar de Ventas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Agrega cualquier estilo personalizado aquí si es necesario -->
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <!-- Puedes reutilizar el encabezado de otras páginas si es necesario -->
+    </header>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h2 class="mt-5">Desviación Estándar de Ventas</h2>
+        <div>
+            <p>Aquí puedes ver la desviación estándar de tus ventas:</p>
+            {% if desviacion_estandar %}
+                <p>La desviación estándar de tus ventas es: {{ desviacion_estandar }}</p>
+                {% if frecuencia_compra_media is not none %}
+                    <p>La frecuencia de compra media es: {{ frecuencia_compra_media }}</p>
+                {% else %}
+                    <p>No se han cargado datos de ventas para calcular la frecuencia de compra media.</p>
+                {% endif %}
+            {% else %}
+                <p>No se han cargado datos de ventas para calcular la desviación estándar.</p>
+            {% endif %}
+            
+            <!-- Agrega los gráficos generados -->
+            <div class="mt-5">
+                <img src="{{ url_for('static', filename='pedidos_por_cliente.png') }}" alt="Gráfico de Pedidos por Cliente" class="img-fluid">
+                <p>Gráfico: Cantidad de Pedidos por Cliente</p>
+            </div>
+            <div class="mt-5">
+                <img src="{{ url_for('static', filename='frecuencia_compra.png') }}" alt="Gráfico de Frecuencia de Compra" class="img-fluid">
+                <p>Gráfico: Frecuencia de Compra Promedio por Cliente</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Agrega cualquier script necesario aquí -->
+</body>
+</html>
+
+
+
+
+
+
