@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido a SalesAI</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+        .navbar-custom {
+            background-color: #5D55FA; /* Ajustar al color deseado */
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: white;
+            margin-right: 15px;
+        }
+        .hero-section {
+            padding: 150px 0;
+            color: white;
+            background: linear-gradient(to right, #667eea, #764ba2); /* Ejemplo de degradado */
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 3.5rem;
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+        }
+        .btn-hero {
+            background-color: #34D399; /* Ajustar al color deseado */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+        .btn-hero:hover {
+            background-color: #28a745; /* Ajustar al color deseado para hover */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link" href="#">Productos</a>
+                    <a class="nav-link" href="#">Academia</a>
+                    <a class="nav-link" href="#">Soporte</a>
+                </div>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="#">Contáctanos</a>
+                    <a class="nav-link" href="#">Login</a>
+                    <form action="/SubirArchivo.html" method="get">
+                        <button type="submit" class="btn btn-light">Try for free</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1>Automatice su motor de ingresos con IA.</h1>
+            <p>Descubra SalesAI: la solución para analizar ventas de manera automática y presentar datos precisos, asegurando maximizar las ventas.</p>
+            <!-- Asegúrate de que la ruta a 'SubirArchivo.html' sea correcta según la configuración de tu servidor Flask -->
+            <form action="/SubirArchivo.html" method="get">
+                <button type="submit" class="btn btn-hero">Probar Ahora</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap al final para un correcto funcionamiento de los componentes interactivos -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
